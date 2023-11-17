@@ -1,5 +1,4 @@
 /.yarnrc.yml
-/yarn.lock
 /.yarn/
 /node_modules/
 
