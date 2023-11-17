@@ -1,5 +1,7 @@
 /.yarnrc.yml
 /.yarn/
 /node_modules/
+/.next
+/next-env.d.ts
 
 .idea

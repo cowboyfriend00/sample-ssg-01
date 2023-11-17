@@ -2,7 +2,7 @@ import type { NextPage } from 'next';
 import Head from 'next/head';
 import Link from 'next/link';
 import PostCard from '../components/PostCard';
-import { PostType } from '../interfaces/post';
+import { PostType } from '../interfaces/postType';
 import { getAllPosts } from '../lib/api';
 import styles from '../styles/Home.module.css';
 

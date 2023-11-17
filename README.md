@@ -23,12 +23,12 @@ blog-starter-kit
 │  └─ PostCard.tsx
 ├─ interfaces
 │  ├─ author.ts
-│  └─ post.ts
+│  └─ postType.ts
 ├─ lib
 │  ├─ api.ts
 │  └─ markdownToHtml.ts
 ├─ pages
-│  ├─ [slug].tsx
+│  ├─ [...slug].tsx
 │  ├─ _app.tsx
 │  └─ index.tsx
 ├─ public

@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { PostType } from '../interfaces/post';
+import { PostType } from '../interfaces/postType';
 
 const PostCard = ({ postInfo }: { postInfo: PostType }) => {
   const { slug, title, date } = postInfo;
