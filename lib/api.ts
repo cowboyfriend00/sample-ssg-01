@@ -42,7 +42,7 @@ const getSlugByDirStructure = (dir:GenericObject)=> {
   return files;
 }
 export function getPostBySlug(slug: string, fields: string[] = []) {
-  // console.log('slug',slug);
+  // console.log('getPostBySlug',slug);
   const realSlug = slug.replace(/\.md$/, '');
 
   const fullPath = join(postsDirectory, `${realSlug}.md`);

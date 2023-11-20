@@ -4,16 +4,16 @@ import markdownToHtml from "../lib/markdownToHtml";
 
 const Post = ({ post }: { post: PostType }) => {
   return (
-      <>
-        <div>{post.title}</div>
-        <div dangerouslySetInnerHTML={{ __html: post.content }} />
-      </>
+    <>
+      <div>{post.title}</div>
+      <div dangerouslySetInnerHTML={{ __html: post.content }} />
+    </>
   );
 };
 
 export async function getStaticProps({
-                                       params,
-                                     }: {
+  params,
+}: {
   params: {
     slug: string[];
   };
@@ -42,6 +42,7 @@ export async function getStaticProps({
 }
 
 export async function getStaticPaths() {
+  console.log("getStaticPaths");
   const posts = getAllPosts(["slug", "path"]);
   // console.log("getStaticPaths.posts", posts);
   return {
