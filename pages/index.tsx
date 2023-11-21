@@ -7,10 +7,6 @@ import styles from "../styles/Home.module.css";
 import { useRouter } from "next/router";
 
 const Home: NextPage<{ posts: PostType[] }> = ({ posts }) => {
-  const router = useRouter();
-  const handleClick = (e: any, slug: string) => {
-    router.push(slug);
-  };
   return (
     <div className={styles.container}>
       <Head>
@@ -19,17 +15,6 @@ const Home: NextPage<{ posts: PostType[] }> = ({ posts }) => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main className={styles.main}>
-        <div style={{ width: "300px" }}>
-          <div>왼쪽트리지롱</div>
-          {posts.map((post, index) => (
-            <div
-              key={`${post.slug}`}
-              onClick={(e) => handleClick(e, `${post.slug}`)}
-            >
-              ${post.slug}
-            </div>
-          ))}
-        </div>
         <div>
           {posts.map((post, index) => (
             <PostCard postInfo={post} key={`${post.slug}_${index}`} />
@@ -42,7 +27,7 @@ const Home: NextPage<{ posts: PostType[] }> = ({ posts }) => {
 
 export async function getStaticProps() {
   // 시작할때 반드시 실행됨
-  console.log("getStaticProps");
+  // console.log("getStaticProps index");
   // data fetching
   const posts = getAllPosts(["slug", "title", "date"]);
   return {
