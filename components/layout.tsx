@@ -1,7 +1,10 @@
-import React, { useEffect, useState } from "react";
+// import useSWR from "swr";
+import React, { FormEvent, useEffect, useState } from "react";
 import { Router, useRouter } from "next/router";
 import { PostType } from "../interfaces/postType";
 import Link from "next/link";
+import Profile from "./Profile";
+import SearchComp from "./Search";
 
 export const Layout = ({
   children,
@@ -13,22 +16,12 @@ export const Layout = ({
   routerInfo: Router;
 }) => {
   // console.log("router", routerInfo);
+  // const { data, error } = useSWR("/api/navigation");
+
+  // if (error) return <div>Failed to load</div>;
+  // if (!data) return <div>Loading...</div>;
+  // console.log("Layout : pageProps", pageProps);
   const posts = pageProps.posts || [];
-  const [params, setParams] = useState<any>();
-
-  const router = useRouter();
-
-  const handleClick = (e: any, slug: string) => {
-    const params = {
-      searchKeyword: "markdown",
-      treeParam: { selected: true, treeId: "a" },
-      url: slug,
-    };
-    setParams(params);
-    router.push(params.url).then((res) => {
-      console.log("res", res);
-    });
-  };
 
   return (
     <div
@@ -44,25 +37,7 @@ export const Layout = ({
           padding: "20px",
         }}
       >
-        <div>왼쪽트리지롱</div>
-        {posts.map((post: PostType) => (
-          <div
-            key={`${post.slug}`}
-            onClick={(e) => handleClick(e, `${post.slug}`)}
-          >
-            {post.slug === params?.url ? `==${post.slug}` : post.slug}
-          </div>
-          // <div key={post.slug}>
-          //   <Link
-          //     href={{
-          //       pathname: post.slug,
-          //       query: { info: "zxcvzxcv" },
-          //     }}
-          //   >
-          //     {post.slug === params?.url ? `==${post.slug}` : post.slug}
-          //   </Link>
-          // </div>
-        ))}
+        <SearchComp initialPosts={posts} />
       </div>
       <main>{children}</main>
     </div>
