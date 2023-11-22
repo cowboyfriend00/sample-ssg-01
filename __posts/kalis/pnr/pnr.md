@@ -1,9 +1,8 @@
 ---
-seq: 100
-title: 마크다운
+seq: 2
+title: Pnr 유저가이드
 ---
-
-# Heading 1
+# PNR 관련된 내용입니다.
 
 ## Heading 2
 

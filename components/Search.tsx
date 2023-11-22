@@ -1,76 +1,78 @@
 import React, { useState, useEffect, FormEvent } from "react";
-import { Router, useRouter } from "next/router";
 import { PostType } from "../interfaces/postType";
+import Tree from "./Tree";
 
 function SearchComp({ initialPosts }: any) {
   const [posts, setPosts] = useState<PostType[]>(initialPosts);
-  async function onSubmit(event: FormEvent<HTMLFormElement>) {
+
+  // console.log("initialPosts", initialPosts);
+  const onChangeSearch = (event: any) => {
     event.preventDefault();
-
-    const formData = new FormData(event.currentTarget);
-    formData.set("posts", JSON.stringify(posts));
-    const response = await fetch("/api/submit", {
-      method: "POST",
-      body: formData,
-    });
-
-    // Handle response if necessary
-    const data = await response.json();
-    setPosts(data.result.posts);
-    console.log("data", data);
-    // ...
-  }
-  const [params, setParams] = useState<any>();
-
-  const router = useRouter();
-
-  const handleClick = (e: any, slug: string) => {
-    const params = {
-      searchKeyword: "markdown",
-      treeParam: { selected: true, treeId: "a" },
-      url: slug,
-    };
-    setParams(params);
-    router.push(params.url).then((res) => {
-      console.log("res", res);
-    });
+    const searchKeyword = event.currentTarget.value;
+    const result = initialPosts.filter((post: any) =>
+      post.title.includes(searchKeyword)
+    );
+    // console.log("onChangeSearch : searchKeyword", searchKeyword);
+    // console.log("onChangeSearch : result", result);
+    setPosts(result);
+    // console.log("onChangeSearch : posts", posts);
   };
+  useEffect(() => {}, [posts]);
   return (
-    <div>
-      <form onSubmit={onSubmit}>
-        <input type="text" name="searchKeyword" />
-        <button type="submit">Submit</button>
-      </form>
-      <hr />
+    <div
+      style={{
+        display: "flex",
+        flexFlow: "column",
+        minWidth: "250px",
+        backgroundColor: "#ffffff",
+        color: "black",
+        padding: "20px",
+      }}
+    >
+      <div style={{ paddingBottom: "10px", borderBottom: "1px solid #000000" }}>
+        <input
+          type="text"
+          name="searchKeyword"
+          style={{ width: "-webkit-fill-available" }}
+          placeholder={"검색어를 입력하세요"}
+          onChange={onChangeSearch}
+        />
+      </div>
       {posts && posts.length > 0 && (
         <div
           style={{
             display: "flex",
             justifyContent: "center",
-            paddingBottom: "20px",
+            padding: "10px 0",
           }}
         >
           Menu
         </div>
       )}
-      {posts.map((post: PostType) => (
-        <div
-          key={`${post.slug}`}
-          onClick={(e) => handleClick(e, `${post.slug}`)}
-        >
-          {post.slug === params?.url ? `==${post.slug}` : post.slug}
-        </div>
-        // <div key={post.slug}>
-        //   <Link
-        //     href={{
-        //       pathname: post.slug,
-        //       query: { info: "zxcvzxcv" },
-        //     }}
-        //   >
-        //     {post.slug === params?.url ? `==${post.slug}` : post.slug}
-        //   </Link>
-        // </div>
-      ))}
+      {/*{posts.map((post: PostType) => (*/}
+      {/*  <div*/}
+      {/*    key={`${post.slug}`}*/}
+      {/*    onClick={(e) => handleClick(e, `${post.slug}`)}*/}
+      {/*    style={{*/}
+      {/*      textOverflow: "ellipsis",*/}
+      {/*      overflow: "hidden",*/}
+      {/*      whiteSpace: "nowrap",*/}
+      {/*    }}*/}
+      {/*  >*/}
+      {/*    {post.slug === params?.url ? `<<${post.title}>>` : post.title}*/}
+      {/*  </div>*/}
+      {/*  // <div key={post.slug}>*/}
+      {/*  //   <Link*/}
+      {/*  //     href={{*/}
+      {/*  //       pathname: post.slug,*/}
+      {/*  //       query: { info: "zxcvzxcv" },*/}
+      {/*  //     }}*/}
+      {/*  //   >*/}
+      {/*  //     {post.slug === params?.url ? `==${post.slug}` : post.slug}*/}
+      {/*  //   </Link>*/}
+      {/*  // </div>*/}
+      {/*))}*/}
+      <Tree posts={posts} />
     </div>
   );
 }

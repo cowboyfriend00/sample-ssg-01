@@ -66,7 +66,9 @@ export function getPostBySlug(slug: string, fields: string[] = []) {
   };
 
   const items: Items = {};
-  // console.log('fields',fields)
+  // console.log("fields", fields);
+  // console.log("data", data);
+
   // Ensure only the minimal needed data is exposed
   fields.forEach((field) => {
     if (field === "slug") {
@@ -75,11 +77,33 @@ export function getPostBySlug(slug: string, fields: string[] = []) {
     if (field === "content") {
       items[field] = content;
     }
-
     if (typeof data[field] !== "undefined") {
       items[field] = data[field];
     }
   });
+  const strings = realSlug.split("/");
+  // console.log("strings", strings);
+  if (strings.length > 0) {
+    if (strings.length === 1) {
+      items["parentId"] = process.env.ROOT_DIR || "";
+      items["id"] = realSlug;
+    } else if (strings.length === 2) {
+      if (strings[strings.length - 1] !== strings[strings.length - 2]) {
+        items["parentId"] = strings[strings.length - 2];
+      } else {
+        items["parentId"] = process.env.ROOT_DIR || "";
+      }
+      items["id"] = strings[strings.length - 1];
+    } else if (strings.length > 2) {
+      if (strings[strings.length - 1] === strings[strings.length - 2]) {
+        items["parentId"] = strings[strings.length - 3];
+        items["id"] = strings[strings.length - 2];
+      } else {
+        items["parentId"] = strings[strings.length - 2];
+        items["id"] = strings[strings.length - 1];
+      }
+    }
+  }
 
   // console.log('items',items)
   return items;
@@ -118,24 +142,17 @@ export function getPostBySlugForProps(slug: string[], fields: string[] = []) {
   return items;
 }
 
-export const getPost = async (slug: string) => {
-  const realSlug = slug.replace(/\.md$/, "");
-
-  const fullPath = join(postsDirectory, `${realSlug}.md`);
-  const fileContents = fs.readFileSync(fullPath, "utf8");
-  const { data, content } = matter(fileContents);
-  const post: PostType = {
-    slug: realSlug,
-    content: await markdownToHtml(content || ""),
-  };
-  return post;
-};
-
 export function getAllPosts(fields: string[] = []) {
   const slugs = getPostSlugs();
-  const posts = slugs
-    .map((slug) => getPostBySlug(slug, fields))
-    // sort posts by date in descending order
-    .sort((post1, post2) => (post1.date > post2.date ? -1 : 1));
+  const posts = slugs.map((slug) => {
+    const posts = getPostBySlug(slug, fields);
+    return posts;
+  });
+  // sort posts by date in descending order
+  // .sort(
+  //   (post1, post2) =>
+  //     (post1.folderSeq < post2.folderSeq ? -1 : 1) &&
+  //     (post1.seq < post2.seq ? -1 : 1)
+  // );
   return posts;
 }

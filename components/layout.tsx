@@ -29,16 +29,7 @@ export const Layout = ({
         display: "flex",
       }}
     >
-      <div
-        style={{
-          width: "300px",
-          backgroundColor: "#ffffff",
-          color: "black",
-          padding: "20px",
-        }}
-      >
-        <SearchComp initialPosts={posts} />
-      </div>
+      <SearchComp initialPosts={posts} />
       <main>{children}</main>
     </div>
   );

@@ -128,3 +128,12 @@
     filter: invert(1);
   }
 }
+.tree {
+  display: flex;
+  align-items: center;
+}
+.tree:hover {
+  /*background-color: #f6f6f2;*/
+  cursor: pointer;
+  /*border-right: solid 5px;*/
+}

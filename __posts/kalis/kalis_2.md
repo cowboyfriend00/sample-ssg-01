@@ -1,9 +1,9 @@
 ---
-seq: 100
-title: 마크다운
+seq: 1
+title: Kalis 주의사항
 ---
 
-# Heading 1
+# kalis 관련된 내용입니다.
 
 ## Heading 2
 

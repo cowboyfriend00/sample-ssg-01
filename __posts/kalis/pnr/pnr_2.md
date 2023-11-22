@@ -1,10 +1,8 @@
 ---
-title: 마크다운 테스트 kalis
-author: 바보
-date: '2022-10-19'
+seq: 2
+title: Pnr 주의사항
 ---
-
-# kalis 관련된 내용입니다.
+# PNR 관련된 내용입니다.
 
 ## Heading 2
 

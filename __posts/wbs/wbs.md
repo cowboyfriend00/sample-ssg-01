@@ -1,7 +1,6 @@
 ---
-title: 마크다운 테스트 zed
-author: 바보
-date: '2022-10-19'
+seq: 2
+title: Wbs 유저 가이드
 ---
 
 # Zed 관련된 내용 입니다.

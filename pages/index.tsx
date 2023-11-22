@@ -4,7 +4,6 @@ import PostCard from "../components/PostCard";
 import { PostType } from "../interfaces/postType";
 import { getAllPosts } from "../lib/api";
 import styles from "../styles/Home.module.css";
-import { useRouter } from "next/router";
 
 const Home: NextPage<{ posts: PostType[] }> = ({ posts }) => {
   return (
@@ -29,7 +28,7 @@ export async function getStaticProps() {
   // 시작할때 반드시 실행됨
   // console.log("getStaticProps index");
   // data fetching
-  const posts = getAllPosts(["slug", "title", "date"]);
+  const posts = getAllPosts(["slug", "title", "seq", "folderSeq"]);
   return {
     props: {
       posts,
