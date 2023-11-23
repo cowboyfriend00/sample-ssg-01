@@ -3,17 +3,11 @@ const nextConfig = {
   reactStrictMode: true,
   swcMinify: true,
   output: "export",
-  // webpack: (config) => {
-  //   config.module.rules.push({
-  //     test: /\.svg$/,
-  //     use: ["@svgr/webpack"],
-  //   });
-  //   return config;
-  // },
   images: {
-    loader: "imgix",
+    loader: "akamai",
     path: "",
   },
+  compiler: { styledComponents: true },
 };
 
 module.exports = nextConfig;

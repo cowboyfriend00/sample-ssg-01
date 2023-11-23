@@ -1,31 +1,30 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styles from "../styles/Home.module.css";
-import { useRouter } from "next/router";
 import Image from "next/image";
 import ArrowLower from "../icons/icon__arrow-lower.svg";
 import ArrowUpper from "../icons/icon__arrow-upper.svg";
+import { styled } from "../shared/stitches/stitches.config";
+import { Flex } from "../shared/components/Flex";
 
-const TreeItem = ({ item, selected }: any) => {
-  const [params, setParams] = useState<any>();
-  const router = useRouter();
-  const handleClick = (e: any, slug: string) => {
-    const params = {
-      searchKeyword: "markdown",
-      treeParam: { selected: true, treeId: "a" },
-      url: slug,
-    };
-    setParams(params);
-    router.push(params.url);
-  };
+const TreeItem = ({ item, selected, handleClick, setUpperCollapsed }: any) => {
   const [collapsed, setCollapsed] = useState(false);
+  useEffect(() => {
+    if (setUpperCollapsed && selected) {
+      if (selected === item.slug) setUpperCollapsed(true);
+    }
+    if (selected) {
+      const strings = selected?.split("/");
+      if (
+        strings[item?.depth] === item?.id &&
+        strings[item.depth + 1] !== item?.id
+      )
+        setCollapsed(true);
+    }
+  }, [selected]);
+  const toggleCollapse = () => {
+    setCollapsed(!collapsed);
+  };
 
-  // console.log("TreeItem", item);
-  // console.log("depth", item.depth);
-  // console.log("ArrowUpper");
-
-  function toggleCollapse() {
-    setCollapsed((prevValue) => !prevValue);
-  }
   return (
     <>
       {item.childNodes.length > 0 ? (
@@ -51,17 +50,17 @@ const TreeItem = ({ item, selected }: any) => {
                   />
                 )}
               </div>
-              <div
-                onClick={(e) => handleClick(e, `${item.slug}`)}
-                style={{
-                  textOverflow: "ellipsis",
-                  overflow: "hidden",
-                  whiteSpace: "nowrap",
-                }}
-              >
-                [{item.seq}]_
-                {item.title}
-              </div>
+              {selected === item.slug ? (
+                <SelectedTreeItemFlex
+                  onClick={(e) => handleClick(e, `${item.slug}`)}
+                >
+                  [{item.seq}]_{item.title}
+                </SelectedTreeItemFlex>
+              ) : (
+                <TreeItemFlex onClick={(e) => handleClick(e, `${item.slug}`)}>
+                  [{item.seq}]_{item.title}
+                </TreeItemFlex>
+              )}
             </div>
           </div>
           <div
@@ -71,23 +70,37 @@ const TreeItem = ({ item, selected }: any) => {
             }}
           >
             {item.childNodes.map((child: any, index: number) => (
-              <TreeItem key={index} item={child} />
+              <TreeItem
+                key={index}
+                item={child}
+                handleClick={handleClick}
+                selected={selected}
+                setUpperCollapsed={setCollapsed}
+              />
             ))}
           </div>
         </>
       ) : (
         <div className={styles.tree}>
-          <div
-            style={{
-              paddingLeft: item.depth * 20 + ArrowUpper.width,
-              textOverflow: "ellipsis",
-              overflow: "hidden",
-              whiteSpace: "nowrap",
-            }}
-            onClick={(e) => handleClick(e, `${item.slug}`)}
-          >
-            [{item.seq}]_{item.title}
-          </div>
+          {selected === item.slug ? (
+            <SelectedTreeItemFlex
+              style={{
+                paddingLeft: item.depth * 20 + ArrowUpper.width,
+              }}
+              onClick={(e) => handleClick(e, `${item.slug}`)}
+            >
+              [{item.seq}]_{item.title}
+            </SelectedTreeItemFlex>
+          ) : (
+            <TreeItemFlex
+              style={{
+                paddingLeft: item.depth * 20 + ArrowUpper.width,
+              }}
+              onClick={(e) => handleClick(e, `${item.slug}`)}
+            >
+              [{item.seq}]_{item.title}
+            </TreeItemFlex>
+          )}
         </div>
       )}
     </>
@@ -95,3 +108,13 @@ const TreeItem = ({ item, selected }: any) => {
 };
 
 export default TreeItem;
+
+export const TreeItemFlex = styled(Flex, {
+  textOverflow: "ellipsis",
+  overflow: "hidden",
+  whiteSpace: "nowrap",
+  wordBreak: "break-all",
+});
+export const SelectedTreeItemFlex = styled(TreeItemFlex, {
+  backgroundColor: "$teal-teal100",
+});

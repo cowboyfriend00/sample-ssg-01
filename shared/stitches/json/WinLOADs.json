@@ -1,0 +1,102 @@
+{
+  "tertiary": {
+    "base": {
+      "value": "{green.green500}",
+      "type": "color"
+    },
+    "hover": {
+      "value": "{green.green10}",
+      "type": "color"
+    },
+    "active": {
+      "value": "{green.green50}",
+      "type": "color"
+    },
+    "disabled": {
+      "value": "{green.green100}",
+      "type": "color"
+    },
+    "active-disabled": {
+      "value": "{green.green150}",
+      "type": "color"
+    }
+  },
+  "SPCL": {
+    "danger": {
+      "value": "{orange.orange400}",
+      "type": "color"
+    },
+    "danger-bg": {
+      "value": "{orange.orange100}",
+      "type": "color"
+    },
+    "col": {
+      "value": "{blue.blue400}",
+      "type": "color"
+    },
+    "col-bg": {
+      "value": "{blue.blue100}",
+      "type": "color"
+    },
+    "fro": {
+      "value": "{purple.purple400}",
+      "type": "color"
+    },
+    "fro-bg": {
+      "value": "{purple.purple100}",
+      "type": "color"
+    },
+    "live": {
+      "value": "{mint.mint400}",
+      "type": "color"
+    },
+    "live-bg": {
+      "value": "{mint.mint100}",
+      "type": "color"
+    },
+    "etc": {
+      "value": "{gray.gray400}",
+      "type": "color"
+    },
+    "etc-bg": {
+      "value": "{gray.gray50}",
+      "type": "color"
+    }
+  },
+  "Dest": {
+    "bulk": {
+      "value": "{red.red200}",
+      "type": "color"
+    },
+    "01": {
+      "value": "{yellow.yellow300}",
+      "type": "color"
+    },
+    "02": {
+      "value": "{blue.blue200}",
+      "type": "color"
+    },
+    "03": {
+      "value": "{mint.mint300}",
+      "type": "color"
+    },
+    "04": {
+      "value": "{purple.purple300}",
+      "type": "color"
+    },
+    "05": {
+      "value": "{orange.orange300}",
+      "type": "color"
+    },
+    "06": {
+      "value": "{gray.gray200}",
+      "type": "color"
+    }
+  },
+  "Flight": {
+    "warning": {
+      "value": "{orange.orange300}",
+      "type": "color"
+    }
+  }
+}

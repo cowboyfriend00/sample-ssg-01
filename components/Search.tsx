@@ -1,11 +1,12 @@
 import React, { useState, useEffect, FormEvent } from "react";
 import { PostType } from "../interfaces/postType";
 import Tree from "./Tree";
-import { treeMaker } from "../lib/treeMaker";
+import { getTreeForm } from "../lib/getTreeForm";
 import { useRouter } from "next/router";
+import { SelectedTreeItemFlex } from "./TreeItem";
+import { Flex } from "../shared/components/Flex";
 
 function SearchComp({ initialPosts }: any) {
-  // console.log("initialPosts", initialPosts);
   const [posts, setPosts] = useState<PostType[]>(initialPosts);
   const [searchPosts, setSearchPosts] = useState<PostType[]>();
   const [tree, setTree] = useState<any>();
@@ -17,12 +18,11 @@ function SearchComp({ initialPosts }: any) {
   }, [initialPosts]);
 
   useEffect(() => {
-    setTree(treeMaker(posts));
+    setTree(getTreeForm(posts));
   }, [posts]);
 
   useEffect(() => {
     setSelected(params?.url);
-    console.log("selected", selected);
   }, [params]);
   const onChangeSearch = (event: any) => {
     event.preventDefault();
@@ -31,14 +31,10 @@ function SearchComp({ initialPosts }: any) {
       const result = initialPosts.filter((post: any) =>
         post.title.includes(searchKeyword)
       );
-      // console.log("onChangeSearch : searchKeyword", searchKeyword);
-      // console.log("onChangeSearch : result", result);
       setSearchPosts(result);
     } else {
       setSearchPosts(undefined);
     }
-
-    // console.log("onChangeSearch : posts", posts);
   };
 
   const handleClick = (e: any, slug: string) => {
@@ -48,7 +44,6 @@ function SearchComp({ initialPosts }: any) {
       url: slug,
     };
     setParams(params);
-
     router.push(params.url);
   };
   return (
@@ -72,67 +67,41 @@ function SearchComp({ initialPosts }: any) {
         />
       </div>
       {posts && posts.length > 0 && (
-        <div
+        <Flex
+          center
           style={{
-            display: "flex",
-            justifyContent: "center",
             padding: "10px 0",
           }}
         >
           Menu
-        </div>
+        </Flex>
       )}
-      {
-        searchPosts ? (
-          searchPosts?.map((post) => (
-            <div
-              key={`${post.slug}`}
-              onClick={(e) => handleClick(e, `${post.slug}`)}
-              style={{
-                textOverflow: "ellipsis",
-                overflow: "hidden",
-                whiteSpace: "nowrap",
-                padding: "0px 0px 10px 0px",
-              }}
-            >
-              {selected === post.slug ? (
-                <div style={{ backgroundColor: "#f23123" }}>
-                  [{post.seq}]_{post.title}
-                </div>
-              ) : (
-                <div>
-                  [{post.seq}]_{post.title}
-                </div>
-              )}
-            </div>
-          ))
-        ) : (
-          <Tree tree={tree} selected={selected} />
-        )
-        //     searchPosts?.map((post: PostType) => (
-        //   <div
-        //     key={`${post.slug}`}
-        //     onClick={(e) => handleClick(e, `${post.slug}`)}
-        //     style={{
-        //       textOverflow: "ellipsis",
-        //       overflow: "hidden",
-        //       whiteSpace: "nowrap",
-        //     }}
-        //   >
-        //     {post.slug === params?.url ? `<<${post.title}>>` : post.title}
-        //   </div>
-        //   // <div key={post.slug}>
-        //   //   <Link
-        //   //     href={{
-        //   //       pathname: post.slug,
-        //   //       query: { info: "zxcvzxcv" },
-        //   //     }}
-        //   //   >
-        //   //     {post.slug === params?.url ? `==${post.slug}` : post.slug}
-        //   //   </Link>
-        //   // </div>
-        // ))
-      }
+      {searchPosts ? (
+        searchPosts?.map((post) => (
+          <div
+            key={`${post.slug}`}
+            onClick={(e) => handleClick(e, `${post.slug}`)}
+            style={{
+              textOverflow: "ellipsis",
+              overflow: "hidden",
+              whiteSpace: "nowrap",
+              padding: "0px 0px 10px 0px",
+            }}
+          >
+            {selected === post.slug ? (
+              <SelectedTreeItemFlex>
+                [{post.seq}]_{post.title}
+              </SelectedTreeItemFlex>
+            ) : (
+              <div>
+                [{post.seq}]_{post.title}
+              </div>
+            )}
+          </div>
+        ))
+      ) : (
+        <Tree tree={tree} selected={selected} handleClick={handleClick} />
+      )}
     </div>
   );
 }
