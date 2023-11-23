@@ -1,9 +1,9 @@
 ---
-seq: -1
-title: Kalis 유저 가이드
+seq: 1
+title: itinerary 입력 가이드
 ---
 
-# kalis 관련된 내용입니다.
+# itinerary 입력 가이드
 
 ## Heading 2
 

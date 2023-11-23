@@ -1,6 +1,6 @@
 ---
-seq: -1
-title: Kalis 유저 가이드
+seq: 1
+title: Kalis 주의사항_2
 ---
 
 # kalis 관련된 내용입니다.

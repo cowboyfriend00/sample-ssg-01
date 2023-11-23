@@ -11,6 +11,7 @@ const Post = ({ post, posts }: { post: PostType; posts: PostType[] }) => {
             padding: "20px",
             backgroundColor: "#000000",
             minWidth: "800px",
+            color: "lightyellow",
           }}
         >
           <div style={{ fontSize: "32px" }}>{post.title}</div>

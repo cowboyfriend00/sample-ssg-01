@@ -1,29 +1,62 @@
 import React, { useState, useEffect, FormEvent } from "react";
 import { PostType } from "../interfaces/postType";
 import Tree from "./Tree";
+import { treeMaker } from "../lib/treeMaker";
+import { useRouter } from "next/router";
 
 function SearchComp({ initialPosts }: any) {
-  const [posts, setPosts] = useState<PostType[]>(initialPosts);
-
   // console.log("initialPosts", initialPosts);
+  const [posts, setPosts] = useState<PostType[]>(initialPosts);
+  const [searchPosts, setSearchPosts] = useState<PostType[]>();
+  const [tree, setTree] = useState<any>();
+  const [params, setParams] = useState<any>();
+  const [selected, setSelected] = useState<string>();
+  const router = useRouter();
+  useEffect(() => {
+    if (posts.length === 0) setPosts(initialPosts);
+  }, [initialPosts]);
+
+  useEffect(() => {
+    setTree(treeMaker(posts));
+  }, [posts]);
+
+  useEffect(() => {
+    setSelected(params?.url);
+    console.log("selected", selected);
+  }, [params]);
   const onChangeSearch = (event: any) => {
     event.preventDefault();
     const searchKeyword = event.currentTarget.value;
-    const result = initialPosts.filter((post: any) =>
-      post.title.includes(searchKeyword)
-    );
-    // console.log("onChangeSearch : searchKeyword", searchKeyword);
-    // console.log("onChangeSearch : result", result);
-    setPosts(result);
+    if (searchKeyword !== "") {
+      const result = initialPosts.filter((post: any) =>
+        post.title.includes(searchKeyword)
+      );
+      // console.log("onChangeSearch : searchKeyword", searchKeyword);
+      // console.log("onChangeSearch : result", result);
+      setSearchPosts(result);
+    } else {
+      setSearchPosts(undefined);
+    }
+
     // console.log("onChangeSearch : posts", posts);
   };
-  useEffect(() => {}, [posts]);
+
+  const handleClick = (e: any, slug: string) => {
+    const params = {
+      searchKeyword: "markdown",
+      treeParam: { selected: true, treeId: "a" },
+      url: slug,
+    };
+    setParams(params);
+
+    router.push(params.url);
+  };
   return (
     <div
       style={{
         display: "flex",
         flexFlow: "column",
-        minWidth: "250px",
+        width: "250px",
         backgroundColor: "#ffffff",
         color: "black",
         padding: "20px",
@@ -49,30 +82,57 @@ function SearchComp({ initialPosts }: any) {
           Menu
         </div>
       )}
-      {/*{posts.map((post: PostType) => (*/}
-      {/*  <div*/}
-      {/*    key={`${post.slug}`}*/}
-      {/*    onClick={(e) => handleClick(e, `${post.slug}`)}*/}
-      {/*    style={{*/}
-      {/*      textOverflow: "ellipsis",*/}
-      {/*      overflow: "hidden",*/}
-      {/*      whiteSpace: "nowrap",*/}
-      {/*    }}*/}
-      {/*  >*/}
-      {/*    {post.slug === params?.url ? `<<${post.title}>>` : post.title}*/}
-      {/*  </div>*/}
-      {/*  // <div key={post.slug}>*/}
-      {/*  //   <Link*/}
-      {/*  //     href={{*/}
-      {/*  //       pathname: post.slug,*/}
-      {/*  //       query: { info: "zxcvzxcv" },*/}
-      {/*  //     }}*/}
-      {/*  //   >*/}
-      {/*  //     {post.slug === params?.url ? `==${post.slug}` : post.slug}*/}
-      {/*  //   </Link>*/}
-      {/*  // </div>*/}
-      {/*))}*/}
-      <Tree posts={posts} />
+      {
+        searchPosts ? (
+          searchPosts?.map((post) => (
+            <div
+              key={`${post.slug}`}
+              onClick={(e) => handleClick(e, `${post.slug}`)}
+              style={{
+                textOverflow: "ellipsis",
+                overflow: "hidden",
+                whiteSpace: "nowrap",
+                padding: "0px 0px 10px 0px",
+              }}
+            >
+              {selected === post.slug ? (
+                <div style={{ backgroundColor: "#f23123" }}>
+                  [{post.seq}]_{post.title}
+                </div>
+              ) : (
+                <div>
+                  [{post.seq}]_{post.title}
+                </div>
+              )}
+            </div>
+          ))
+        ) : (
+          <Tree tree={tree} selected={selected} />
+        )
+        //     searchPosts?.map((post: PostType) => (
+        //   <div
+        //     key={`${post.slug}`}
+        //     onClick={(e) => handleClick(e, `${post.slug}`)}
+        //     style={{
+        //       textOverflow: "ellipsis",
+        //       overflow: "hidden",
+        //       whiteSpace: "nowrap",
+        //     }}
+        //   >
+        //     {post.slug === params?.url ? `<<${post.title}>>` : post.title}
+        //   </div>
+        //   // <div key={post.slug}>
+        //   //   <Link
+        //   //     href={{
+        //   //       pathname: post.slug,
+        //   //       query: { info: "zxcvzxcv" },
+        //   //     }}
+        //   //   >
+        //   //     {post.slug === params?.url ? `==${post.slug}` : post.slug}
+        //   //   </Link>
+        //   // </div>
+        // ))
+      }
     </div>
   );
 }

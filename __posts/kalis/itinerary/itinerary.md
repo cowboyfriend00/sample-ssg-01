@@ -1,9 +1,9 @@
 ---
-seq: -1
-title: Kalis 유저 가이드
+seq: 99
+title: itinerary 유저 가이드
 ---
 
-# kalis 관련된 내용입니다.
+# itinerary 관련된 내용입니다.
 
 ## Heading 2
 

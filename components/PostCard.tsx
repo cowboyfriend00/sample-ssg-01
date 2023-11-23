@@ -2,7 +2,7 @@ import Link from "next/link";
 import { PostType } from "../interfaces/postType";
 
 const PostCard = ({ postInfo }: { postInfo: PostType }) => {
-  const { slug, title, date } = postInfo;
+  const { slug, title } = postInfo;
   return (
     <Link href={`/${slug}`}>
       <div
@@ -15,7 +15,7 @@ const PostCard = ({ postInfo }: { postInfo: PostType }) => {
           cursor: "pointer",
         }}
       >
-        {title} - {date}
+        {title}
       </div>
     </Link>
   );
